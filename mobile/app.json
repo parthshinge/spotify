@@ -1,0 +1,28 @@
+{
+    "expo": {
+        "name": "Spotify Music",
+        "slug": "spotify-music",
+        "version": "1.0.0",
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "plugins": [
+            [
+                "expo-linear-gradient"
+            ]
+        ],
+        "ios": {
+            "supportsTabletMode": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            }
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        }
+    },
+    "name": "spotify-music"
+}
