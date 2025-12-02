@@ -1,16 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://127.0.0.1:8000/api",
-});
-
-// Auth token असल्यास request मध्ये auto add होईल
-API.interceptors.request.use((config) => {
-    const token = localStorage.getItem("access");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+    baseURL: "/api", // 👈 फक्त /api ठेवणार
 });
 
 export default API;

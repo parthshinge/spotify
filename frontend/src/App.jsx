@@ -4,7 +4,7 @@ import PlayerBar from "./components/PlayerBar";
 
 export default function App() {
   return (
-    <div className="bg-black text-white min-h-screen pb-16">
+    <div className="bg-black text-white min-h-screen pb-80">
       <Navbar />
       <SongList />
       <PlayerBar />
