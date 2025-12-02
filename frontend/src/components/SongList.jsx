@@ -163,13 +163,15 @@ export default function SongList() {
 
   // Main render
   return (
-    <div>
-      <Controls
-        search={search}
-        onSearchChange={setSearch}
-        showLikedOnly={showLikedOnly}
-        onToggleLikedOnly={setShowLikedOnly}
-      />
+    <div className="space-y-3">
+      <div className="mb-2">
+        <Controls
+          search={search}
+          onSearchChange={setSearch}
+          showLikedOnly={showLikedOnly}
+          onToggleLikedOnly={setShowLikedOnly}
+        />
+      </div>
 
       {/* No songs message */}
       {filteredSongs.length === 0 ? (
@@ -177,13 +179,13 @@ export default function SongList() {
           {songs.length === 0
             ? "No songs available."
             : showLikedOnly
-              ? "No liked songs found."
-              : "No songs match your search."}
+            ? "No liked songs found."
+            : "No songs match your search."}
         </div>
       ) : (
         // Song list
-        <div className="p-4 space-y-2">
-          <h2 className="text-xl font-bold mb-4">
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold mb-2">
             {showLikedOnly
               ? `Liked Songs (${filteredSongs.length})`
               : `All Songs (${filteredSongs.length})`}
@@ -191,18 +193,16 @@ export default function SongList() {
           {filteredSongs.map((song, index) => (
             <div
               key={song.id}
-              className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition ${
+              className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border border-white/5 bg-white/3 backdrop-blur-md ${
                 currentSong?.id === song.id
-                  ? "bg-green-700"
-                  : "bg-neutral-800 hover:bg-neutral-700"
+                  ? "ring-2 ring-[#10b981] bg-gradient-to-br from-[#10b981]/20 to-white/5"
+                  : "hover:bg-white/5"
               }`}
               onClick={() => playSong(song, index, filteredSongs)}
             >
               <div className="flex-1 min-w-0">
                 <div className="font-semibold truncate">{song.title}</div>
-                <div className="text-sm text-gray-300 truncate">
-                  {song.artist?.name}
-                </div>
+                <div className="text-sm text-gray-300 truncate">{song.artist?.name}</div>
               </div>
 
               <button
