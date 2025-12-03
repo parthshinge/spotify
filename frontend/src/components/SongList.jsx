@@ -187,11 +187,11 @@ export default function SongList() {
         </div>
       ) : (
         // Song list
-        <div className="space-y-3">
-          <h2 className="text-lg font-bold mb-2">
+        <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
+          <h2 className="text-lg font-bold mb-4 sticky top-0 bg-black/40 backdrop-blur py-2">
             {showLikedOnly
-              ? `Liked Songs (${filteredSongs.length})`
-              : `All Songs (${filteredSongs.length})`}
+              ? `❤️ Liked (${filteredSongs.length})`
+              : `🎵 Songs (${filteredSongs.length})`}
           </h2>
           {filteredSongs.map((song, index) => (
             <div
@@ -203,16 +203,16 @@ export default function SongList() {
               }`}
               onClick={() => playSong(song, index, filteredSongs)}
             >
-              <div className="flex items-center gap-4 flex-1 min-w-0">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg flex-shrink-0 ${
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm flex-shrink-0 font-bold ${
                   currentSong?.id === song.id
                     ? "bg-gradient-to-br from-violet-500 to-purple-600"
                     : "bg-white/10 group-hover:bg-white/20"
                 }`}>
-                  🎵
+                  {index + 1}
                 </div>
                 <div className="min-w-0">
-                  <div className={`font-semibold truncate ${
+                  <div className={`font-semibold truncate text-sm ${
                     currentSong?.id === song.id ? "text-white" : "text-gray-200 group-hover:text-white"
                   }`}>
                     {song.title}
@@ -226,7 +226,7 @@ export default function SongList() {
                   e.stopPropagation();
                   toggleLike(song.id);
                 }}
-                className="ml-4 text-lg hover:scale-125 transition-transform flex-shrink-0"
+                className="ml-3 text-lg hover:scale-125 transition-transform flex-shrink-0"
                 title={likedIds.has(song.id) ? "Unlike" : "Like"}
               >
                 {likedIds.has(song.id) ? "❤️" : "🤍"}

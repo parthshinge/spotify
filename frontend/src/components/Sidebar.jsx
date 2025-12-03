@@ -12,7 +12,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="flex flex-col h-full sticky top-6">
+    <div className="flex flex-col h-full sticky top-24">
       <div className="bg-gradient-to-b from-white/8 to-white/3 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
         {/* Profile Section */}
         <div className="flex items-center gap-4 mb-8 pb-8 border-b border-white/10">

@@ -25,22 +25,22 @@ export default function PlayerBar() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent text-white border-t border-white/5 backdrop-blur-xl shadow-2xl z-50">
-      <div className="max-w-7xl mx-auto w-full px-8 py-6">
-        <div className="bg-gradient-to-r from-white/8 to-white/4 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent text-white border-t border-white/10 backdrop-blur-xl shadow-2xl z-50 pb-safe">
+      <div className="max-w-7xl mx-auto w-full px-8 py-8">
+        <div className="bg-gradient-to-r from-white/8 to-white/4 backdrop-blur-xl border border-white/10 rounded-3xl p-7 shadow-2xl">
           {/* Song Info & Progress */}
-          <div className="flex items-center gap-6 mb-4">
-            <div className="flex items-center gap-4 flex-1">
+          <div className="flex items-center gap-8 mb-6">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-2xl shadow-lg flex-shrink-0">🎵</div>
               <div className="min-w-0">
-                <div className="font-bold text-white truncate">{currentSong.title}</div>
+                <div className="font-bold text-white truncate text-lg">{currentSong.title}</div>
                 <div className="text-sm text-gray-300 truncate">{currentSong.artist?.name}</div>
               </div>
             </div>
 
             {/* Seek Bar */}
-            <div className="flex-1 flex items-center gap-3">
-              <span className="text-xs text-gray-400 w-10 text-right">{formatTime(currentTime)}</span>
+            <div className="flex-1 flex items-center gap-4 min-w-0">
+              <span className="text-xs text-gray-400 w-12 text-right flex-shrink-0">{formatTime(currentTime)}</span>
               <input
                 type="range"
                 min={0}
@@ -49,7 +49,7 @@ export default function PlayerBar() {
                 onChange={(e) => seek(Number(e.target.value))}
                 className="flex-1 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500 hover:accent-violet-400"
               />
-              <span className="text-xs text-gray-400 w-10">{formatTime(duration)}</span>
+              <span className="text-xs text-gray-400 w-12 text-left flex-shrink-0">{formatTime(duration)}</span>
             </div>
           </div>
 
@@ -65,17 +65,18 @@ export default function PlayerBar() {
                 step={0.01}
                 value={volume}
                 onChange={(e) => changeVolume(Number(e.target.value))}
-                className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500"
+                className="flex-1 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500"
               />
+              <span className="text-xs text-gray-400 w-8 text-right">{Math.round(volume * 100)}%</span>
             </div>
 
             {/* Center: Play Controls */}
-            <div className="flex items-center justify-center gap-6">
-              <button onClick={prevSong} className="text-white/70 hover:text-white text-2xl transition">⏮️</button>
-              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-lg transform hover:scale-105 transition-all duration-200">
+            <div className="flex items-center justify-center gap-8">
+              <button onClick={prevSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200">⏮️</button>
+              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-lg transform hover:scale-110 transition-all duration-200">
                 <span className="text-2xl">{isPlaying ? '⏸️' : '▶️'}</span>
               </button>
-              <button onClick={nextSong} className="text-white/70 hover:text-white text-2xl transition">⏭️</button>
+              <button onClick={nextSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200">⏭️</button>
             </div>
 
             {/* Right: Empty spacer */}

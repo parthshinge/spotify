@@ -2,10 +2,10 @@ import React from 'react';
 
 function FeaturedCard({ title, subtitle, emoji }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer h-40 flex items-end">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent group-hover:from-black/50 transition-all duration-300"></div>
+    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer h-40 flex items-end hover:shadow-lg hover:shadow-violet-500/20">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent group-hover:from-black/60 transition-all duration-300"></div>
       <div className="relative z-10">
-        <div className="text-5xl mb-3">{emoji}</div>
+        <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-300">{emoji}</div>
         <h3 className="text-2xl font-bold">{title}</h3>
         <p className="text-sm text-gray-200 mt-1">{subtitle}</p>
       </div>
@@ -15,7 +15,15 @@ function FeaturedCard({ title, subtitle, emoji }) {
 
 export default function DiscoverCards() {
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-12 pb-8">
+      {/* Welcome Section */}
+      <section>
+        <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+          <span className="text-4xl">👋</span> 
+          <span>Welcome to Your Music Hub</span>
+        </h2>
+      </section>
+
       {/* Featured Playlists */}
       <section>
         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
@@ -35,11 +43,11 @@ export default function DiscoverCards() {
         </div>
         <div className="grid grid-cols-4 gap-4">
           {['Chill Hits', 'Party Mix', 'Workout', 'Sleep'].map((name, i) => (
-            <div key={i} className="group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 cursor-pointer">
+            <div key={i} className="group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-violet-500/10">
               <div className="w-full h-32 bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-4xl group-hover:scale-105 transition-transform duration-300">{'🎧'}</div>
               <div className="p-4">
                 <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition">{name}</p>
-                <p className="text-xs text-gray-400 mt-1">Playlist</p>
+                <p className="text-xs text-gray-400 mt-1">Playlist • 50+ songs</p>
               </div>
             </div>
           ))}
@@ -48,15 +56,34 @@ export default function DiscoverCards() {
 
       {/* New Releases */}
       <section>
-        <h2 className="text-2xl font-bold mb-6">✨ New Releases</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">✨ New Releases</h2>
+          <button className="text-sm font-semibold text-violet-400 hover:text-violet-300 transition">View all →</button>
+        </div>
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex-shrink-0 group cursor-pointer">
-              <div className="w-48 h-48 rounded-2xl bg-gradient-to-br from-violet-500/60 to-pink-500/40 flex items-center justify-center text-6xl mb-3 group-hover:shadow-lg group-hover:shadow-violet-500/20 transition-all duration-300">🎧</div>
+              <div className="w-48 h-48 rounded-2xl bg-gradient-to-br from-violet-500/60 to-pink-500/40 flex items-center justify-center text-6xl mb-3 group-hover:shadow-lg group-hover:shadow-violet-500/20 transition-all duration-300 group-hover:scale-105">🎧</div>
               <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition">New Song {i + 1}</p>
               <p className="text-xs text-gray-400">Artist Name</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Stats or Info Section */}
+      <section className="grid grid-cols-3 gap-4 mt-12">
+        <div className="bg-gradient-to-br from-violet-500/20 to-purple-500/10 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition">
+          <div className="text-3xl font-bold text-violet-400">1,234</div>
+          <p className="text-sm text-gray-400 mt-2">Total Songs</p>
+        </div>
+        <div className="bg-gradient-to-br from-pink-500/20 to-purple-500/10 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition">
+          <div className="text-3xl font-bold text-pink-400">24h</div>
+          <p className="text-sm text-gray-400 mt-2">Listening Time</p>
+        </div>
+        <div className="bg-gradient-to-br from-purple-500/20 to-violet-500/10 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition">
+          <div className="text-3xl font-bold text-purple-400">47</div>
+          <p className="text-sm text-gray-400 mt-2">Liked Songs</p>
         </div>
       </section>
     </div>
