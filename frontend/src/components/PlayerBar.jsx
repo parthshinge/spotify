@@ -25,48 +25,61 @@ export default function PlayerBar() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-[#050016]/80 via-[#1f0a3a]/70 to-transparent text-white p-4 border-t border-white/5 rounded-t-3xl shadow-2xl flex flex-col gap-3 z-50">
-      <div className="max-w-7xl mx-auto w-full px-4">
-        <div className="bg-white/4 backdrop-blur-md border border-white/6 rounded-2xl p-4 flex flex-col md:flex-row md:items-center gap-3">
-          <div className="flex-1">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-neutral-800 flex items-center justify-center text-xl">🎵</div>
-              <div>
-                <div className="font-semibold">{currentSong.title}</div>
-                <div className="text-sm text-gray-300">{currentSong.artist?.name}</div>
+    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent text-white border-t border-white/5 backdrop-blur-xl shadow-2xl z-50">
+      <div className="max-w-7xl mx-auto w-full px-8 py-6">
+        <div className="bg-gradient-to-r from-white/8 to-white/4 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+          {/* Song Info & Progress */}
+          <div className="flex items-center gap-6 mb-4">
+            <div className="flex items-center gap-4 flex-1">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-2xl shadow-lg flex-shrink-0">🎵</div>
+              <div className="min-w-0">
+                <div className="font-bold text-white truncate">{currentSong.title}</div>
+                <div className="text-sm text-gray-300 truncate">{currentSong.artist?.name}</div>
               </div>
             </div>
-          </div>
 
-          <div className="flex-1 flex flex-col gap-2">
-            <input
-              type="range"
-              min={0}
-              max={duration || 0}
-              value={currentTime}
-              onChange={(e) => seek(Number(e.target.value))}
-              className="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#10b981]"
-            />
-            <div className="flex items-center justify-center gap-6">
-              <button onClick={prevSong} className="text-white text-2xl">⏮️</button>
-              <button onClick={togglePlayPause} className="bg-[#a855f7] hover:bg-[#9226e0] text-white rounded-full p-3">
-                {isPlaying ? '⏸️' : '▶️'}
-              </button>
-              <button onClick={nextSong} className="text-white text-2xl">⏭️</button>
+            {/* Seek Bar */}
+            <div className="flex-1 flex items-center gap-3">
+              <span className="text-xs text-gray-400 w-10 text-right">{formatTime(currentTime)}</span>
+              <input
+                type="range"
+                min={0}
+                max={duration || 0}
+                value={currentTime}
+                onChange={(e) => seek(Number(e.target.value))}
+                className="flex-1 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500 hover:accent-violet-400"
+              />
+              <span className="text-xs text-gray-400 w-10">{formatTime(duration)}</span>
             </div>
           </div>
 
-          <div className="w-48 flex items-center gap-3">
-            <span className="text-white">🔊</span>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              onChange={(e) => changeVolume(Number(e.target.value))}
-              className="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#a855f7]"
-            />
+          {/* Controls */}
+          <div className="flex items-center justify-between">
+            {/* Left: Volume */}
+            <div className="flex items-center gap-3 w-48">
+              <span className="text-lg">🔊</span>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={(e) => changeVolume(Number(e.target.value))}
+                className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500"
+              />
+            </div>
+
+            {/* Center: Play Controls */}
+            <div className="flex items-center justify-center gap-6">
+              <button onClick={prevSong} className="text-white/70 hover:text-white text-2xl transition">⏮️</button>
+              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-lg transform hover:scale-105 transition-all duration-200">
+                <span className="text-2xl">{isPlaying ? '⏸️' : '▶️'}</span>
+              </button>
+              <button onClick={nextSong} className="text-white/70 hover:text-white text-2xl transition">⏭️</button>
+            </div>
+
+            {/* Right: Empty spacer */}
+            <div className="w-48"></div>
           </div>
         </div>
       </div>

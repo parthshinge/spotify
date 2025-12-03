@@ -1,38 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Sidebar() {
+  const [activeMenu, setActiveMenu] = useState('Home');
+
+  const menuItems = [
+    { icon: '🏠', label: 'Home' },
+    { icon: '🔥', label: 'Trending' },
+    { icon: '❤️', label: 'Favorites' },
+    { icon: '📚', label: 'Library' },
+    { icon: '⚙️', label: 'Settings' },
+  ];
+
   return (
     <div className="flex flex-col h-full sticky top-6">
-      <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-lg">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#a855f7] to-[#ec4899] flex items-center justify-center text-white text-lg font-bold shadow-md">P</div>
+      <div className="bg-gradient-to-b from-white/8 to-white/3 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+        {/* Profile Section */}
+        <div className="flex items-center gap-4 mb-8 pb-8 border-b border-white/10">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold shadow-lg ring-2 ring-white/20">P</div>
           <div>
-            <div className="text-sm text-gray-300">Hi!</div>
-            <div className="font-bold text-white">Parth</div>
+            <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Welcome back</div>
+            <div className="text-lg font-bold text-white">Parth</div>
           </div>
         </div>
 
-        <nav className="flex flex-col gap-2">
-          {[
-            ['🏠', 'Home'],
-            ['🎤', 'Artist'],
-            ['❤️', 'Favorite'],
-            ['📚', 'Library'],
-            ['❓', 'Help'],
-            ['⚙️', 'Settings'],
-          ].map(([icon, label]) => (
+        {/* Navigation */}
+        <nav className="flex flex-col gap-3 mb-8">
+          {menuItems.map(({ icon, label }) => (
             <button
               key={label}
-              className="flex items-center gap-3 w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition"
+              onClick={() => setActiveMenu(label)}
+              className={`flex items-center gap-4 w-full px-4 py-3 rounded-2xl font-medium transition-all duration-200 ${
+                activeMenu === label
+                  ? 'bg-gradient-to-r from-violet-500/80 to-purple-500/80 text-white shadow-lg'
+                  : 'text-gray-300 hover:text-white hover:bg-white/5'
+              }`}
             >
-              <span className="text-lg">{icon}</span>
-              <span className="text-sm text-gray-200">{label}</span>
+              <span className="text-xl">{icon}</span>
+              <span className="text-sm">{label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="mt-6 pt-4 border-t border-white/5">
-          <button className="w-full text-left text-sm text-pink-400">Logout</button>
+        {/* Logout */}
+        <div className="pt-8 border-t border-white/10">
+          <button className="w-full px-4 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-500/10 transition">
+            Logout
+          </button>
         </div>
       </div>
     </div>
