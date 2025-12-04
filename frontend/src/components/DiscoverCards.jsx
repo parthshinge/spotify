@@ -2,8 +2,9 @@ import React from 'react';
 
 function FeaturedCard({ title, subtitle, emoji }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-2xl border border-white/20 hover:border-white/30 transition-all duration-300 cursor-pointer h-40 flex items-end hover:shadow-2xl hover:shadow-violet-500/40 hover:scale-105 hover:-translate-y-2">
+    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-2xl border border-white/20 hover:border-white/30 transition-all duration-300 cursor-pointer h-40 flex items-end hover:shadow-2xl hover:shadow-violet-500/40 hover:scale-105 hover:-translate-y-2 proj-card">
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent group-hover:from-black/60 transition-all duration-300"></div>
+      <div className="proj-glow"></div>
       <div className="relative z-10">
         <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">{emoji}</div>
         <h3 className="text-2xl font-bold drop-shadow-lg">{title}</h3>
@@ -60,7 +61,7 @@ export default function DiscoverCards({ search, onSearchChange }) {
         </div>
         <div className="grid grid-cols-4 gap-4">
           {['Chill Hits', 'Party Mix', 'Workout', 'Sleep'].map((name, i) => (
-            <div key={i} className="group rounded-2xl overflow-hidden bg-white/8 backdrop-blur-xl border border-white/20 hover:border-white/30 hover:bg-white/12 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-violet-500/30 hover:scale-105 hover:-translate-y-1">
+            <div key={i} className="group rounded-2xl overflow-hidden bg-white/8 backdrop-blur-xl border border-white/20 hover:border-white/30 hover:bg-white/12 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-violet-500/30 hover:scale-105 hover:-translate-y-1 proj-card">
               <div className="w-full h-32 bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">{'🎧'}</div>
               <div className="p-4">
                 <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition drop-shadow">{name}</p>

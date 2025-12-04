@@ -13,7 +13,7 @@ export default function Sidebar() {
 
   return (
     <div className="flex flex-col h-full sticky top-24">
-      <div className="bg-gradient-to-b from-white/8 to-white/3 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 shadow-2xl shadow-purple-900/40">
+      <div className="bg-gradient-to-b from-white/8 to-white/3 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 shadow-2xl shadow-purple-900/40 proj-card">
         {/* Profile Section */}
         <div className="flex items-center gap-4 mb-8 pb-8 border-b border-white/20">
           <div className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-xl font-bold shadow-2xl shadow-violet-500/50 ring-2 ring-white/30 drop-shadow-lg">P</div>

@@ -27,7 +27,7 @@ export default function PlayerBar() {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent text-white border-t border-white/20 backdrop-blur-2xl shadow-2xl shadow-purple-900/50 z-50 pb-safe">
       <div className="max-w-7xl mx-auto w-full px-8 py-8">
-        <div className="bg-gradient-to-r from-white/10 to-white/6 backdrop-blur-2xl border border-white/20 rounded-3xl p-7 shadow-2xl shadow-violet-500/30">
+        <div className="bg-gradient-to-r from-white/10 to-white/6 backdrop-blur-2xl border border-white/20 rounded-3xl p-7 shadow-2xl shadow-violet-500/30 proj-card player-floating">
           {/* Song Info & Progress */}
           <div className="flex items-center gap-8 mb-6">
             <div className="flex items-center gap-4 flex-1 min-w-0">

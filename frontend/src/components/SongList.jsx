@@ -215,8 +215,8 @@ export default function SongList({ searchProp, onSearchChange }) {
               key={song.id}
               className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-200 border backdrop-blur-lg group ${
                 currentSong?.id === song.id
-                  ? "bg-gradient-to-r from-violet-500/40 to-purple-500/30 border-violet-400/60 ring-2 ring-violet-400/60 shadow-2xl shadow-violet-500/40 scale-105"
-                  : "bg-white/8 border-white/20 hover:bg-white/12 hover:border-white/30 hover:shadow-2xl hover:shadow-violet-500/20 hover:scale-105"
+                  ? "bg-gradient-to-r from-violet-500/40 to-purple-500/30 border-violet-400/60 ring-2 ring-violet-400/60 shadow-2xl shadow-violet-500/40 scale-105 proj-card"
+                  : "bg-white/8 border-white/20 hover:bg-white/12 hover:border-white/30 hover:shadow-2xl hover:shadow-violet-500/20 hover:scale-105 proj-card"
               }`}
               onClick={() => playSong(song, index, filteredSongs)}
             >

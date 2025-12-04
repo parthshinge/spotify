@@ -1,6 +1,6 @@
 export default function Navbar() {
   return (
-    <header className="w-full py-6 px-8 border-b border-white/15 backdrop-blur-xl sticky top-0 z-30 bg-black/40 shadow-2xl shadow-purple-900/30">
+    <header className="w-full py-6 px-8 border-b border-white/15 backdrop-blur-xl sticky top-0 z-30 bg-black/40 shadow-2xl shadow-purple-900/30 proj-card">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">

@@ -10,12 +10,12 @@ export default function App() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white overflow-hidden proj-container">
       {/* Decorative gradient background elements */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-700/15 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-700/12 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-700/15 rounded-full blur-3xl transform-gpu translate-z-0"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-700/12 rounded-full blur-3xl transform-gpu translate-z-0"></div>
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl transform-gpu translate-z-0"></div>
       </div>
 
       <Navbar />
