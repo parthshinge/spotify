@@ -5,7 +5,7 @@ import { usePlayer } from "../context/PlayerContext";
 // Controls component for search and liked toggle
 function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) {
   return (
-    <div className="sticky top-0 bg-gradient-to-b from-black/80 to-black/40 backdrop-blur-lg z-40 p-5 space-y-4 border-b border-white/5 rounded-2xl">
+    <div className="sticky top-0 bg-gradient-to-b from-black/80 to-black/40 backdrop-blur-2xl z-40 p-5 space-y-4 border-b border-white/20 rounded-2xl shadow-2xl shadow-purple-900/30">
       {/* Search Bar */}
       <div className="relative">
         <input
@@ -13,7 +13,7 @@ function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) 
           placeholder="Search songs or artists..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full bg-white/8 backdrop-blur-md border border-white/10 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:bg-white/12 placeholder-gray-400 transition"
+          className="w-full bg-white/10 backdrop-blur-lg border border-white/20 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/60 focus:bg-white/15 placeholder-gray-400 transition-all shadow-lg focus:shadow-violet-500/30"
         />
         <span className="absolute right-4 top-3 text-gray-400">🔍</span>
       </div>
@@ -24,8 +24,8 @@ function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) 
           onClick={() => onToggleLikedOnly(false)}
           className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 text-sm ${
             !showLikedOnly
-              ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg"
-              : "bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/8"
+              ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-2xl shadow-violet-500/50 scale-105"
+              : "bg-white/8 border border-white/20 text-gray-300 hover:text-white hover:bg-white/12 hover:scale-105 hover:shadow-lg"
           }`}
         >
           All Songs
@@ -34,8 +34,8 @@ function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) 
           onClick={() => onToggleLikedOnly(true)}
           className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 text-sm ${
             showLikedOnly
-              ? "bg-gradient-to-r from-pink-500 to-red-600 text-white shadow-lg"
-              : "bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/8"
+              ? "bg-gradient-to-r from-pink-500 to-red-600 text-white shadow-2xl shadow-pink-500/50 scale-105"
+              : "bg-white/8 border border-white/20 text-gray-300 hover:text-white hover:bg-white/12 hover:scale-105 hover:shadow-lg"
           }`}
         >
           ❤️ Liked
@@ -213,10 +213,10 @@ export default function SongList({ searchProp, onSearchChange }) {
           {filteredSongs.map((song, index) => (
             <div
               key={song.id}
-              className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-200 border backdrop-blur-md group ${
+              className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-200 border backdrop-blur-lg group ${
                 currentSong?.id === song.id
-                  ? "bg-gradient-to-r from-violet-500/30 to-purple-500/20 border-violet-400/40 ring-2 ring-violet-400/50 shadow-lg shadow-violet-500/10"
-                  : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                  ? "bg-gradient-to-r from-violet-500/40 to-purple-500/30 border-violet-400/60 ring-2 ring-violet-400/60 shadow-2xl shadow-violet-500/40 scale-105"
+                  : "bg-white/8 border-white/20 hover:bg-white/12 hover:border-white/30 hover:shadow-2xl hover:shadow-violet-500/20 hover:scale-105"
               }`}
               onClick={() => playSong(song, index, filteredSongs)}
             >
@@ -243,7 +243,7 @@ export default function SongList({ searchProp, onSearchChange }) {
                   e.stopPropagation();
                   toggleLike(song.id);
                 }}
-                className="ml-3 text-lg hover:scale-125 transition-transform flex-shrink-0"
+                className="ml-3 text-lg hover:scale-150 transition-transform flex-shrink-0 drop-shadow-lg"
                 title={likedIds.has(song.id) ? "Unlike" : "Like"}
               >
                 {likedIds.has(song.id) ? "❤️" : "🤍"}

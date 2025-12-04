@@ -1,13 +1,13 @@
 export default function Navbar() {
   return (
-    <header className="w-full py-6 px-8 border-b border-white/10 backdrop-blur-md sticky top-0 z-30">
+    <header className="w-full py-6 px-8 border-b border-white/15 backdrop-blur-xl sticky top-0 z-30 bg-black/40 shadow-2xl shadow-purple-900/30">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <div className="text-3xl">🎵</div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Spotify</h1>
+            <div className="text-3xl drop-shadow-lg">🎵</div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-300 via-purple-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">Spotify</h1>
           </div>
-          <p className="text-sm text-gray-400">Discover, play, and enjoy music</p>
+          <p className="text-sm text-gray-300/80">Discover, play, and enjoy music</p>
         </div>
 
         <div className="hidden md:flex items-center gap-6">

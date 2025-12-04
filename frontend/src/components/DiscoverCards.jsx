@@ -2,12 +2,12 @@ import React from 'react';
 
 function FeaturedCard({ title, subtitle, emoji }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer h-40 flex items-end hover:shadow-lg hover:shadow-violet-500/20">
+    <div className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-pink-500/20 backdrop-blur-2xl border border-white/20 hover:border-white/30 transition-all duration-300 cursor-pointer h-40 flex items-end hover:shadow-2xl hover:shadow-violet-500/40 hover:scale-105 hover:-translate-y-2">
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent group-hover:from-black/60 transition-all duration-300"></div>
       <div className="relative z-10">
-        <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-300">{emoji}</div>
-        <h3 className="text-2xl font-bold">{title}</h3>
-        <p className="text-sm text-gray-200 mt-1">{subtitle}</p>
+        <div className="text-5xl mb-3 transform group-hover:scale-120 transition-transform duration-300 drop-shadow-lg">{emoji}</div>
+        <h3 className="text-2xl font-bold drop-shadow-lg">{title}</h3>
+        <p className="text-sm text-gray-200 mt-1 drop-shadow">{subtitle}</p>
       </div>
     </div>
   );
@@ -33,7 +33,7 @@ export default function DiscoverCards({ search, onSearchChange }) {
                 value={search ?? ""}
                 onChange={(e) => onSearchChange?.(e.target.value)}
                 placeholder="Search music"
-                className="w-full rounded-full bg-white/6 backdrop-blur-md border border-white/10 px-4 py-2.5 text-white placeholder-purple-200/40 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+                className="w-full rounded-full bg-white/8 backdrop-blur-lg border border-white/20 px-4 py-2.5 text-white placeholder-purple-200/40 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all duration-200 shadow-lg"
               />
               <span className="absolute right-3 top-2 text-purple-200/60">🔍</span>
             </div>
@@ -60,11 +60,11 @@ export default function DiscoverCards({ search, onSearchChange }) {
         </div>
         <div className="grid grid-cols-4 gap-4">
           {['Chill Hits', 'Party Mix', 'Workout', 'Sleep'].map((name, i) => (
-            <div key={i} className="group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-violet-500/10">
-              <div className="w-full h-32 bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-4xl group-hover:scale-105 transition-transform duration-300">{'🎧'}</div>
+            <div key={i} className="group rounded-2xl overflow-hidden bg-white/8 backdrop-blur-xl border border-white/20 hover:border-white/30 hover:bg-white/12 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-violet-500/30 hover:scale-105 hover:-translate-y-1">
+              <div className="w-full h-32 bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-4xl group-hover:scale-120 transition-transform duration-300 drop-shadow-lg">{'🎧'}</div>
               <div className="p-4">
-                <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition">{name}</p>
-                <p className="text-xs text-gray-400 mt-1">Playlist • 50+ songs</p>
+                <p className="text-sm font-semibold text-white group-hover:text-violet-300 transition drop-shadow">{name}</p>
+                <p className="text-xs text-gray-400 mt-1 drop-shadow">Playlist • 50+ songs</p>
               </div>
             </div>
           ))}
