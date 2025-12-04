@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import DiscoverCards from "./components/DiscoverCards";
@@ -6,12 +7,14 @@ import PlayerBar from "./components/PlayerBar";
 import BottomNav from "./components/BottomNav";
 
 export default function App() {
+  const [search, setSearch] = useState("");
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/30 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white overflow-hidden">
       {/* Decorative gradient background elements */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-700/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-700/8 rounded-full blur-3xl"></div>
       </div>
 
       <Navbar />
@@ -24,13 +27,13 @@ export default function App() {
 
         {/* Center content */}
         <main className="flex-1 max-w-3xl">
-          <DiscoverCards />
+          <DiscoverCards search={search} onSearchChange={setSearch} />
         </main>
 
         {/* Right panel - Song list */}
         <aside className="hidden xl:block xl:w-96">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl h-full max-h-[calc(100vh-200px)] overflow-y-auto">
-            <SongList />
+            <SongList searchProp={search} onSearchChange={setSearch} />
           </div>
         </aside>
       </div>

@@ -13,15 +13,32 @@ function FeaturedCard({ title, subtitle, emoji }) {
   );
 }
 
-export default function DiscoverCards() {
+export default function DiscoverCards({ search, onSearchChange }) {
   return (
     <div className="space-y-12 pb-8">
-      {/* Welcome Section */}
+      {/* Welcome Section + Search */}
       <section>
-        <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-          <span className="text-4xl">👋</span> 
-          <span>Welcome to Your Music Hub</span>
-        </h2>
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
+              <span className="text-4xl">👋</span>
+              <span>Welcome to Your Music Hub</span>
+            </h2>
+            <p className="text-sm text-purple-100/70">Discover, play, and enjoy music</p>
+          </div>
+
+          <div className="hidden md:block w-80">
+            <div className="relative">
+              <input
+                value={search ?? ""}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                placeholder="Search music"
+                className="w-full rounded-full bg-white/6 backdrop-blur-md border border-white/10 px-4 py-2.5 text-white placeholder-purple-200/40 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+              />
+              <span className="absolute right-3 top-2 text-purple-200/60">🔍</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Featured Playlists */}

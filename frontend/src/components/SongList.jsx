@@ -45,11 +45,11 @@ function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) 
   );
 }
 
-export default function SongList() {
+export default function SongList({ searchProp, onSearchChange }) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchProp || "");
   const [likedIds, setLikedIds] = useState(new Set());
   const [showLikedOnly, setShowLikedOnly] = useState(false);
 
@@ -73,6 +73,14 @@ export default function SongList() {
   useEffect(() => {
     localStorage.setItem("likedSongIds", JSON.stringify(Array.from(likedIds)));
   }, [likedIds]);
+
+  // Keep internal search in sync when parent provides searchProp
+  useEffect(() => {
+    if (typeof searchProp !== "undefined" && searchProp !== search) {
+      setSearch(searchProp);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchProp]);
 
   // Fetch songs on mount
   useEffect(() => {
@@ -107,6 +115,15 @@ export default function SongList() {
       }
       return updated;
     });
+  };
+
+  // Handler that prefers parent-controlled onSearchChange if provided
+  const handleSearchChange = (value) => {
+    if (typeof onSearchChange === "function") {
+      onSearchChange(value);
+    } else {
+      setSearch(value);
+    }
   };
 
   // Compute filtered songs
@@ -170,7 +187,7 @@ export default function SongList() {
       <div className="mb-2">
         <Controls
           search={search}
-          onSearchChange={setSearch}
+          onSearchChange={handleSearchChange}
           showLikedOnly={showLikedOnly}
           onToggleLikedOnly={setShowLikedOnly}
         />
