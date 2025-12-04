@@ -1,11 +1,9 @@
 import { usePlayer } from "../context/PlayerContext";
 
-// Format time helper
-function formatTime(seconds) {
-  if (!seconds || isNaN(seconds)) return "0:00";
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
+function formatTime(sec = 0) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 export default function PlayerBar() {
@@ -25,63 +23,65 @@ export default function PlayerBar() {
   if (!currentSong) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent text-white border-t border-white/20 backdrop-blur-2xl shadow-2xl shadow-purple-900/50 z-50 pb-safe">
-      <div className="max-w-7xl mx-auto w-full px-8 py-8">
-        <div className="bg-gradient-to-r from-white/10 to-white/6 backdrop-blur-2xl border border-white/20 rounded-3xl p-7 shadow-2xl shadow-violet-500/30 proj-card player-floating">
-          {/* Song Info & Progress */}
-          <div className="flex items-center gap-8 mb-6">
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-2xl shadow-2xl shadow-violet-500/50 flex-shrink-0 drop-shadow-lg">🎵</div>
-              <div className="min-w-0">
-                <div className="font-bold text-white truncate text-lg drop-shadow">{currentSong.title}</div>
-                <div className="text-sm text-gray-300 truncate drop-shadow">{currentSong.artist?.name}</div>
+    <div className="fixed bottom-0 left-0 right-0 px-4 pb-4">
+      <div className="mx-auto max-w-3xl bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl px-5 py-3 flex flex-col gap-3 text-slate-900">
+        {/* Upper: tiny album + title */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500" />
+            <div className="leading-tight">
+              <div className="text-sm font-semibold truncate">
+                {currentSong.title}
+              </div>
+              <div className="text-xs text-slate-600 truncate">
+                {currentSong.artist?.name || "Unknown artist"}
               </div>
             </div>
-
-            {/* Seek Bar */}
-            <div className="flex-1 flex items-center gap-4 min-w-0">
-              <span className="text-xs text-gray-400 w-12 text-right flex-shrink-0">{formatTime(currentTime)}</span>
-              <input
-                type="range"
-                min={0}
-                max={duration || 0}
-                value={currentTime}
-                onChange={(e) => seek(Number(e.target.value))}
-                className="flex-1 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer accent-violet-500 hover:accent-violet-400 shadow-lg"
-              />
-              <span className="text-xs text-gray-400 w-12 text-left flex-shrink-0">{formatTime(duration)}</span>
-            </div>
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center justify-between">
-            {/* Left: Volume */}
-            <div className="flex items-center gap-3 w-48">
-              <span className="text-lg drop-shadow-lg">🔊</span>
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={volume}
-                onChange={(e) => changeVolume(Number(e.target.value))}
-                className="flex-1 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-violet-500 shadow-lg"
-              />
-              <span className="text-xs text-gray-400 w-8 text-right">{Math.round(volume * 100)}%</span>
-            </div>
-
-            {/* Center: Play Controls */}
-            <div className="flex items-center justify-center gap-8">
-              <button onClick={prevSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏮️</button>
-              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-2xl shadow-violet-500/50 transform hover:scale-110 transition-all duration-200 drop-shadow-lg">
-                <span className="text-2xl">{isPlaying ? '⏸️' : '▶️'}</span>
-              </button>
-              <button onClick={nextSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏭️</button>
-            </div>
-
-            {/* Right: Empty spacer */}
-            <div className="w-48"></div>
+          {/* Volume */}
+          <div className="hidden md:flex items-center gap-2 w-40">
+            <span className="text-xs">🔊</span>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(e) => changeVolume(Number(e.target.value))}
+              className="w-full accent-rose-500"
+            />
           </div>
+        </div>
+
+        {/* Middle: controls */}
+        <div className="flex items-center justify-center gap-5">
+          <button onClick={prevSong} className="text-xl">
+            ⏮️
+          </button>
+          <button
+            onClick={togglePlayPause}
+            className="w-11 h-11 rounded-full bg-rose-500 text-white flex items-center justify-center text-2xl shadow-lg"
+          >
+            {isPlaying ? "⏸" : "▶"}
+          </button>
+          <button onClick={nextSong} className="text-xl">
+            ⏭️
+          </button>
+        </div>
+
+        {/* Bottom: progress bar */}
+        <div className="flex items-center gap-3 text-xs text-slate-700">
+          <span className="w-10 text-right">{formatTime(currentTime)}</span>
+          <input
+            type="range"
+            min={0}
+            max={duration || 0}
+            value={currentTime}
+            onChange={(e) => seek(Number(e.target.value))}
+            className="flex-1 accent-rose-500"
+          />
+          <span className="w-10">{formatTime(duration)}</span>
         </div>
       </div>
     </div>

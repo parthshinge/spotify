@@ -1,46 +1,28 @@
-import { useState } from "react";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import DiscoverCards from "./components/DiscoverCards";
+import ArtistSidebar from "./components/ArtistSidebar";
 import SongList from "./components/SongList";
 import PlayerBar from "./components/PlayerBar";
-import BottomNav from "./components/BottomNav";
+
+import { useState } from "react";
 
 export default function App() {
-  const [search, setSearch] = useState("");
+  const [selectedArtistId, setSelectedArtistId] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white overflow-hidden proj-container">
-      {/* Decorative gradient background elements */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-700/15 rounded-full blur-3xl transform-gpu translate-z-0"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-700/12 rounded-full blur-3xl transform-gpu translate-z-0"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl transform-gpu translate-z-0"></div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 text-slate-900 pb-28">
+      <div className="max-w-6xl mx-auto px-4 pt-6 flex gap-4">
+        {/* Left: artists */}
+        <ArtistSidebar
+          selectedArtistId={selectedArtistId}
+          onSelect={setSelectedArtistId}
+        />
 
-      <Navbar />
-
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex gap-8">
-        {/* Left Sidebar - hidden on small screens */}
-        <aside className="hidden lg:flex lg:w-72 flex-col">
-          <Sidebar />
-        </aside>
-
-        {/* Center content */}
-        <main className="flex-1 max-w-3xl">
-          <DiscoverCards search={search} onSearchChange={setSearch} />
+        {/* Right: songs */}
+        <main className="flex-1 h-[calc(100vh-6rem)]">
+          <SongList selectedArtistId={selectedArtistId} />
         </main>
-
-        {/* Right panel - Song list */}
-        <aside className="hidden xl:block xl:w-96">
-          <div className="bg-white/8 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 shadow-2xl shadow-purple-900/40 h-full max-h-[calc(100vh-200px)] overflow-y-auto">
-            <SongList searchProp={search} onSearchChange={setSearch} />
-          </div>
-        </aside>
       </div>
 
       <PlayerBar />
-      <BottomNav />
     </div>
   );
 }

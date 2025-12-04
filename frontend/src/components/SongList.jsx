@@ -1,257 +1,71 @@
-import { useEffect, useState } from "react";
-import API from "../api";
-import { usePlayer } from "../context/PlayerContext";
-
-// Controls component for search and liked toggle
-function Controls({ search, onSearchChange, showLikedOnly, onToggleLikedOnly }) {
-  return (
-    <div className="sticky top-0 bg-gradient-to-b from-black/80 to-black/40 backdrop-blur-2xl z-40 p-5 space-y-4 border-b border-white/20 rounded-2xl shadow-2xl shadow-purple-900/30">
-      {/* Search Bar */}
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search songs or artists..."
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full bg-white/10 backdrop-blur-lg border border-white/20 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/60 focus:bg-white/15 placeholder-gray-400 transition-all shadow-lg focus:shadow-violet-500/30"
-        />
-        <span className="absolute right-4 top-3 text-gray-400">🔍</span>
-      </div>
-
-      {/* All / Liked Toggle */}
-      <div className="flex gap-2">
-        <button
-          onClick={() => onToggleLikedOnly(false)}
-          className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 text-sm ${
-            !showLikedOnly
-              ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-2xl shadow-violet-500/50 scale-105"
-              : "bg-white/8 border border-white/20 text-gray-300 hover:text-white hover:bg-white/12 hover:scale-105 hover:shadow-lg"
-          }`}
-        >
-          All Songs
-        </button>
-        <button
-          onClick={() => onToggleLikedOnly(true)}
-          className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 text-sm ${
-            showLikedOnly
-              ? "bg-gradient-to-r from-pink-500 to-red-600 text-white shadow-2xl shadow-pink-500/50 scale-105"
-              : "bg-white/8 border border-white/20 text-gray-300 hover:text-white hover:bg-white/12 hover:scale-105 hover:shadow-lg"
-          }`}
-        >
-          ❤️ Liked
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default function SongList({ searchProp, onSearchChange }) {
+export default function SongList({ selectedArtistId }) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [search, setSearch] = useState(searchProp || "");
-  const [likedIds, setLikedIds] = useState(new Set());
-  const [showLikedOnly, setShowLikedOnly] = useState(false);
-
   const { playSong, currentSong } = usePlayer();
 
-  // Load liked songs from localStorage on mount
-  useEffect(() => {
-    const storedLikedIds = localStorage.getItem("likedSongIds");
-    if (storedLikedIds) {
-      try {
-        const parsed = JSON.parse(storedLikedIds);
-        setLikedIds(new Set(parsed));
-      } catch (err) {
-        console.warn("Failed to parse liked songs from localStorage", err);
-        setLikedIds(new Set());
-      }
-    }
-  }, []);
-
-  // Save liked songs to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("likedSongIds", JSON.stringify(Array.from(likedIds)));
-  }, [likedIds]);
-
-  // Keep internal search in sync when parent provides searchProp
-  useEffect(() => {
-    if (typeof searchProp !== "undefined" && searchProp !== search) {
-      setSearch(searchProp);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchProp]);
-
-  // Fetch songs on mount
   useEffect(() => {
     const fetchSongs = async () => {
       try {
         const res = await API.get("/songs/");
         setSongs(res.data);
-        setError(null);
       } catch (err) {
         console.error("Error fetching songs", err);
-        setError({
-          message: err.message,
-          status: err.response?.status,
-          data: err.response?.data,
-        });
       } finally {
         setLoading(false);
       }
     };
-
     fetchSongs();
   }, []);
 
-  // Toggle like/unlike
-  const toggleLike = (id) => {
-    setLikedIds((prev) => {
-      const updated = new Set(prev);
-      if (updated.has(id)) {
-        updated.delete(id);
-      } else {
-        updated.add(id);
-      }
-      return updated;
-    });
-  };
+  if (loading) {
+    return <div className="text-slate-300">Loading songs…</div>;
+  }
 
-  // Handler that prefers parent-controlled onSearchChange if provided
-  const handleSearchChange = (value) => {
-    if (typeof onSearchChange === "function") {
-      onSearchChange(value);
-    } else {
-      setSearch(value);
-    }
-  };
-
-  // Compute filtered songs
+  // 👉 इथे artist filter
   const filteredSongs = songs.filter((song) => {
-    // Apply search filter
-    const searchLower = search.toLowerCase();
-    const matchesSearch =
-      song.title.toLowerCase().includes(searchLower) ||
-      song.artist?.name?.toLowerCase().includes(searchLower);
-
-    if (!matchesSearch) return false;
-
-    // Apply liked filter
-    if (showLikedOnly && !likedIds.has(song.id)) {
-      return false;
-    }
-
-    return true;
+    if (!selectedArtistId) return true;
+    return song.artist && song.artist.id === selectedArtistId;
   });
 
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="p-4">
-        <Controls
-          search={search}
-          onSearchChange={setSearch}
-          showLikedOnly={showLikedOnly}
-          onToggleLikedOnly={setShowLikedOnly}
-        />
-        <div className="text-gray-400 p-4 text-center">Loading songs...</div>
-      </div>
-    );
+  if (!filteredSongs.length) {
+    return <div className="text-slate-400">No songs for this artist.</div>;
   }
 
-  // Show error state
-  if (error) {
-    return (
-      <div className="p-4">
-        <Controls
-          search={search}
-          onSearchChange={setSearch}
-          showLikedOnly={showLikedOnly}
-          onToggleLikedOnly={setShowLikedOnly}
-        />
-        <div className="text-red-400 p-4 text-sm">
-          <div className="font-bold mb-1">Error loading songs ❌</div>
-          <div>Status: {error.status ?? "no status"}</div>
-          <div>Message: {error.message}</div>
-          <pre className="mt-2 bg-black/50 p-2 rounded text-xs">
-            {JSON.stringify(error.data, null, 2)}
-          </pre>
-        </div>
-      </div>
-    );
-  }
-
-  // Main render
   return (
-    <div className="space-y-3">
-      <div className="mb-2">
-        <Controls
-          search={search}
-          onSearchChange={handleSearchChange}
-          showLikedOnly={showLikedOnly}
-          onToggleLikedOnly={setShowLikedOnly}
-        />
-      </div>
+    <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-4 shadow-xl h-full overflow-y-auto">
+      <h2 className="text-lg font-semibold mb-3">
+        {selectedArtistId ? "Songs by artist" : "All Songs"}
+      </h2>
 
-      {/* No songs message */}
-      {filteredSongs.length === 0 ? (
-        <div className="text-gray-400 p-4 text-center">
-          {songs.length === 0
-            ? "No songs available."
-            : showLikedOnly
-            ? "No liked songs found."
-            : "No songs match your search."}
-        </div>
-      ) : (
-        // Song list
-        <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
-          <h2 className="text-lg font-bold mb-4 sticky top-0 bg-black/40 backdrop-blur py-2">
-            {showLikedOnly
-              ? `❤️ Liked (${filteredSongs.length})`
-              : `🎵 Songs (${filteredSongs.length})`}
-          </h2>
-          {filteredSongs.map((song, index) => (
+      <div className="space-y-2">
+        {filteredSongs.map((song, index) => {
+          const isActive = currentSong?.id === song.id;
+          return (
             <div
               key={song.id}
-              className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-200 border backdrop-blur-lg group ${
-                currentSong?.id === song.id
-                  ? "bg-gradient-to-r from-violet-500/40 to-purple-500/30 border-violet-400/60 ring-2 ring-violet-400/60 shadow-2xl shadow-violet-500/40 scale-105 proj-card"
-                  : "bg-white/8 border-white/20 hover:bg-white/12 hover:border-white/30 hover:shadow-2xl hover:shadow-violet-500/20 hover:scale-105 proj-card"
-              }`}
               onClick={() => playSong(song, index, filteredSongs)}
+              className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition
+                ${
+                  isActive
+                    ? "bg-purple-600/80 text-white"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm flex-shrink-0 font-bold ${
-                  currentSong?.id === song.id
-                    ? "bg-gradient-to-br from-violet-500 to-purple-600"
-                    : "bg-white/10 group-hover:bg-white/20"
-                }`}>
-                  {index + 1}
-                </div>
-                <div className="min-w-0">
-                  <div className={`font-semibold truncate text-sm ${
-                    currentSong?.id === song.id ? "text-white" : "text-gray-200 group-hover:text-white"
-                  }`}>
-                    {song.title}
-                  </div>
-                  <div className="text-xs text-gray-400 truncate">{song.artist?.name}</div>
+              <div>
+                <div className="font-semibold text-sm">{song.title}</div>
+                <div className="text-xs text-slate-300">
+                  {song.artist?.name || "Unknown artist"}
                 </div>
               </div>
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleLike(song.id);
-                }}
-                className="ml-3 text-lg hover:scale-150 transition-transform flex-shrink-0 drop-shadow-lg"
-                title={likedIds.has(song.id) ? "Unlike" : "Like"}
-              >
-                {likedIds.has(song.id) ? "❤️" : "🤍"}
-              </button>
+              {/* small play icon */}
+              <div className="text-lg">
+                {isActive ? "⏸" : "▶"}
+              </div>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
     </div>
   );
 }
