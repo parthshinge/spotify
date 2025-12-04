@@ -72,11 +72,11 @@ export default function PlayerBar() {
 
             {/* Center: Play Controls */}
             <div className="flex items-center justify-center gap-8">
-              <button onClick={prevSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-120 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏮️</button>
-              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-2xl shadow-violet-500/50 transform hover:scale-120 transition-all duration-200 drop-shadow-lg">
+              <button onClick={prevSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏮️</button>
+              <button onClick={togglePlayPause} className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-full p-4 shadow-2xl shadow-violet-500/50 transform hover:scale-110 transition-all duration-200 drop-shadow-lg">
                 <span className="text-2xl">{isPlaying ? '⏸️' : '▶️'}</span>
               </button>
-              <button onClick={nextSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-120 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏭️</button>
+              <button onClick={nextSong} className="text-white/60 hover:text-white text-2xl transition hover:scale-110 duration-200 drop-shadow-lg hover:drop-shadow-2xl">⏭️</button>
             </div>
 
             {/* Right: Empty spacer */}
