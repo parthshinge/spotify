@@ -8,46 +8,49 @@ export default function ArtistSidebar({ selectedArtistId, onSelect }) {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        // backend मध्ये /api/artists/ किंवा /api/artist/ कसा आहे त्याप्रमाणे बदल
         const res = await API.get("/artists/");
-        setArtists(res.data);
+        setArtists(res.data || []);
       } catch (err) {
         console.error("Error loading artists", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchArtists();
   }, []);
 
   return (
-    <aside className="hidden md:flex md:flex-col w-64 bg-white/5 backdrop-blur-lg rounded-3xl p-4 text-sm text-slate-100 shadow-xl">
+    <aside className="hidden lg:flex lg:flex-col w-60 p-4 spotify-sidebar rounded-3xl text-sm text-white">
       <h2 className="text-lg font-semibold mb-3">Artists</h2>
 
-      {loading && <div className="text-xs text-slate-300">Loading…</div>}
+      {loading && <div className="text-xs muted">Loading…</div>}
 
-      <button
-        onClick={() => onSelect(null)}
-        className={`mb-2 px-3 py-2 rounded-2xl text-left transition 
-          ${selectedArtistId === null ? "bg-purple-600 text-white" : "hover:bg-white/10"}`}
-      >
-        All artists
-      </button>
+      <div className="space-y-2 overflow-y-auto">
+        <button
+          onClick={() => onSelect(null)}
+          className={`artist-item w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-left ${
+            selectedArtistId === null ? "active" : ""
+          }`}
+        >
+          <div className="artist-avatar">All</div>
+          <div className="truncate">All artists</div>
+        </button>
 
-      <div className="space-y-1 overflow-y-auto">
         {artists.map((artist) => (
           <button
             key={artist.id}
             onClick={() => onSelect(artist.id)}
-            className={`w-full px-3 py-2 rounded-2xl text-left transition 
-              ${
-                selectedArtistId === artist.id
-                  ? "bg-purple-600 text-white"
-                  : "hover:bg-white/10"
-              }`}
+            className={`artist-item w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-left ${
+              selectedArtistId === artist.id ? "active" : ""
+            }`}
           >
-            {artist.name}
+            <div className="artist-avatar" style={{backgroundImage: artist.image ? `url(${artist.image})` : undefined, backgroundSize:'cover'}}>
+              {!artist.image && (artist.name || "?").charAt(0).toUpperCase()}
+            </div>
+            <div className="truncate">
+              <div className="text-sm font-medium">{artist.name}</div>
+              <div className="text-xs muted">{artist.genre || "Artist"}</div>
+            </div>
           </button>
         ))}
       </div>

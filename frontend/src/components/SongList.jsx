@@ -1,13 +1,18 @@
+import { useEffect, useState } from "react";
+import API from "../api";
+import { usePlayer } from "../context/PlayerContext";
+
 export default function SongList({ selectedArtistId }) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [artist, setArtist] = useState(null);
   const { playSong, currentSong } = usePlayer();
 
   useEffect(() => {
     const fetchSongs = async () => {
       try {
         const res = await API.get("/songs/");
-        setSongs(res.data);
+        setSongs(res.data || []);
       } catch (err) {
         console.error("Error fetching songs", err);
       } finally {
@@ -17,54 +22,77 @@ export default function SongList({ selectedArtistId }) {
     fetchSongs();
   }, []);
 
-  if (loading) {
-    return <div className="text-slate-300">Loading songs…</div>;
-  }
+  useEffect(() => {
+    if (!selectedArtistId) return setArtist(null);
+    const fetchArtist = async () => {
+      try {
+        const res = await API.get(`/artists/${selectedArtistId}/`);
+        setArtist(res.data);
+      } catch (err) {
+        // fallback: derive from songs
+        const found = songs.find((s) => s.artist?.id === selectedArtistId);
+        setArtist(found?.artist || null);
+      }
+    };
+    fetchArtist();
+  }, [selectedArtistId, songs]);
 
-  // 👉 इथे artist filter
+  if (loading) return <div className="text-slate-300">Loading songs…</div>;
+
   const filteredSongs = songs.filter((song) => {
     if (!selectedArtistId) return true;
     return song.artist && song.artist.id === selectedArtistId;
   });
 
-  if (!filteredSongs.length) {
-    return <div className="text-slate-400">No songs for this artist.</div>;
-  }
-
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-4 shadow-xl h-full overflow-y-auto">
-      <h2 className="text-lg font-semibold mb-3">
-        {selectedArtistId ? "Songs by artist" : "All Songs"}
-      </h2>
+    <div className="h-full overflow-y-auto">
+      {/* Artist header */}
+      <div className="bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent)] p-6 rounded-2xl mb-4 spotify-main">
+        <div className="flex items-center gap-6">
+          <div className="w-40 h-40 rounded-md bg-black/40 flex items-center justify-center overflow-hidden">
+            {artist?.image ? (
+              <img src={artist.image} alt={artist.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl">{artist?.name?.charAt(0) ?? "A"}</div>
+            )}
+          </div>
 
-      <div className="space-y-2">
-        {filteredSongs.map((song, index) => {
-          const isActive = currentSong?.id === song.id;
-          return (
-            <div
-              key={song.id}
-              onClick={() => playSong(song, index, filteredSongs)}
-              className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition
-                ${
-                  isActive
-                    ? "bg-purple-600/80 text-white"
-                    : "bg-white/5 hover:bg-white/10"
-                }`}
-            >
-              <div>
-                <div className="font-semibold text-sm">{song.title}</div>
-                <div className="text-xs text-slate-300">
-                  {song.artist?.name || "Unknown artist"}
-                </div>
-              </div>
+          <div>
+            <h1 className="text-3xl font-bold text-white">{artist?.name || "All Artists"}</h1>
+            <p className="muted mt-1 max-w-2xl">{artist?.bio || "Explore top tracks and albums from this artist."}</p>
+            <div className="text-sm muted mt-2">{artist?.followers ? `${artist.followers.toLocaleString()} followers` : "—"}</div>
+          </div>
+        </div>
+      </div>
 
-              {/* small play icon */}
-              <div className="text-lg">
-                {isActive ? "⏸" : "▶"}
-              </div>
-            </div>
-          );
-        })}
+      {/* Songs table */}
+      <div className="bg-[rgba(255,255,255,0.02)] p-4 rounded-2xl">
+        <table className="w-full songs-table">
+          <thead>
+            <tr>
+              <th className="w-12">#</th>
+              <th>Title</th>
+              <th>Album</th>
+              <th className="w-24 text-right">Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredSongs.map((song, i) => {
+              const isActive = currentSong?.id === song.id;
+              return (
+                <tr key={song.id} onClick={() => playSong(song, i, filteredSongs)} className={`songs-row ${isActive ? "bg-[rgba(29,185,84,0.07)]" : ""}`}>
+                  <td className="py-3">{i + 1}</td>
+                  <td className="py-3">
+                    <div className="font-medium text-white">{song.title}</div>
+                    <div className="text-xs muted">{song.artist?.name || "Unknown"}</div>
+                  </td>
+                  <td className="py-3 muted">{song.album?.name || "—"}</td>
+                  <td className="py-3 text-right muted">{Math.floor((song.duration || 0) / 60)}:{String((song.duration || 0) % 60).padStart(2, '0')}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
