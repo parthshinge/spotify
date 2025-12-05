@@ -1,4 +1,5 @@
 import { usePlayer } from "../context/PlayerContext";
+import { useState, useRef, useEffect } from "react";
 
 function formatTime(sec = 0) {
   const m = Math.floor(sec / 60);
@@ -19,6 +20,57 @@ export default function PlayerBar() {
     nextSong,
     prevSong,
   } = usePlayer();
+
+  const [isScrubbing, setIsScrubbing] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [tooltipTime, setTooltipTime] = useState(0);
+  const [tooltipLeft, setTooltipLeft] = useState(0);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    const onUp = () => setIsScrubbing(false);
+    window.addEventListener("pointerup", onUp);
+    return () => window.removeEventListener("pointerup", onUp);
+  }, []);
+
+  const posToTime = (clientX) => {
+    if (!trackRef.current) return { time: 0, left: 0 };
+    const rect = trackRef.current.getBoundingClientRect();
+    const x = Math.min(rect.right, Math.max(rect.left, clientX));
+    const pct = (x - rect.left) / rect.width;
+    const time = Math.round((duration || 0) * pct);
+    const left = pct * rect.width;
+    return { time, left };
+  };
+
+  const handlePointerDown = (e) => {
+    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+    const { time, left } = posToTime(clientX);
+    setIsScrubbing(true);
+    seek(time);
+    setTooltipTime(time);
+    setTooltipLeft(left);
+  };
+
+  const handlePointerMove = (e) => {
+    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+    const { time, left } = posToTime(clientX);
+    setTooltipTime(time);
+    setTooltipLeft(left);
+    if (isScrubbing) seek(time);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!duration) return;
+    const step = 5; // seconds
+    if (e.key === "ArrowLeft") {
+      seek(Math.max(0, Math.floor(currentTime) - step));
+      e.preventDefault();
+    } else if (e.key === "ArrowRight") {
+      seek(Math.min(duration, Math.floor(currentTime) + step));
+      e.preventDefault();
+    }
+  };
 
   if (!currentSong) return null;
 
@@ -51,27 +103,38 @@ export default function PlayerBar() {
             <button onClick={nextSong} className="text-white/70 hover:text-white text-2xl">⏭️</button>
           </div>
 
-          <div className="flex items-center gap-3 w-full max-w-2xl">
+          <div className="flex items-center gap-3 w-full max-w-2xl relative" ref={trackRef} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => { setIsHovering(false); if (!isScrubbing) setTooltipTime(0); }}>
             <span className="text-xs muted">{formatTime(currentTime)}</span>
-            <input
-              type="range"
-              className="progress-track flex-1"
-              min={0}
-              max={duration || 0}
-              value={currentTime}
-              aria-valuemin={0}
-              aria-valuemax={duration || 0}
-              aria-valuenow={Math.floor(currentTime)}
-              onChange={(e) => seek(Number(e.target.value))}
-              onInput={(e) => seek(Number(e.target.value))}
-              style={{
-                background: `linear-gradient(90deg, var(--spotify-accent) ${
-                  duration ? Math.round((currentTime / duration) * 100) : 0
-                }%, rgba(255,255,255,0.08) ${
-                  duration ? Math.round((currentTime / duration) * 100) : 0
-                }%)`,
-              }}
-            />
+            <div style={{ position: 'relative', flex: 1 }}>
+              {(isHovering || isScrubbing) && (
+                <div className="seek-tooltip" style={{ left: tooltipLeft }}>
+                  {formatTime(tooltipTime)}
+                </div>
+              )}
+              <input
+                type="range"
+                className="progress-track w-full"
+                min={0}
+                max={duration || 0}
+                value={currentTime}
+                aria-valuemin={0}
+                aria-valuemax={duration || 0}
+                aria-valuenow={Math.floor(currentTime)}
+                onChange={(e) => seek(Number(e.target.value))}
+                onInput={(e) => seek(Number(e.target.value))}
+                onPointerMove={handlePointerMove}
+                onPointerUp={() => setIsScrubbing(false)}
+                onPointerCancel={() => setIsScrubbing(false)}
+                onKeyDown={handleKeyDown}
+                style={{
+                  background: `linear-gradient(90deg, var(--spotify-accent) ${
+                    duration ? Math.round((currentTime / duration) * 100) : 0
+                  }%, rgba(255,255,255,0.08) ${
+                    duration ? Math.round((currentTime / duration) * 100) : 0
+                  }%)`,
+                }}
+              />
+            </div>
             <span className="text-xs muted">{formatTime(duration)}</span>
           </div>
         </div>

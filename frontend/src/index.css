@@ -212,6 +212,53 @@ input[type="range"]::-moz-range-track {
     margin-top: -3px;
 }
 
+.progress-track:hover::-webkit-slider-thumb {
+    transform: scale(1.08);
+    box-shadow: 0 8px 26px rgba(29, 185, 84, 0.28);
+}
+
+.progress-track:active::-webkit-slider-thumb {
+    transform: scale(1.0);
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.22);
+}
+
+.progress-track::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--spotify-accent);
+    box-shadow: 0 6px 18px rgba(29, 185, 84, 0.24);
+}
+
+
+/* tooltip over seek thumb */
+
+.seek-tooltip {
+    position: absolute;
+    top: -38px;
+    padding: 6px 8px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 12px;
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    transform: translateX(-50%);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 30;
+}
+
+.seek-tooltip:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.85);
+}
+
 .progress-fill {
     background: linear-gradient(90deg, var(--spotify-accent), #1ed760);
     height: 8px;
