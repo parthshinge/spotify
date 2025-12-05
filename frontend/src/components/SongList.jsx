@@ -44,21 +44,29 @@ export default function SongList({ selectedArtistId }) {
     return song.artist && song.artist.id === selectedArtistId;
   });
 
+  const formatDuration = (d) => {
+    const secs = Number(d) || 0;
+    if (!secs) return "00:00";
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
   return (
     <div className="h-full overflow-y-auto">
       {/* Artist header */}
       <div className="bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent)] p-6 rounded-2xl mb-4 spotify-main">
         <div className="flex items-center gap-6">
-          <div className="w-40 h-40 rounded-md bg-black/40 flex items-center justify-center overflow-hidden">
+          <div className="w-40 h-40 rounded-md bg-black/40 flex items-center justify-center overflow-hidden shadow-lg">
             {artist?.image ? (
               <img src={artist.image} alt={artist.name} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl">{artist?.name?.charAt(0) ?? "A"}</div>
+              <div className="w-full h-full bg-white/6 flex items-center justify-center text-4xl">{artist?.name?.charAt(0) ?? "A"}</div>
             )}
           </div>
 
           <div>
-            <h1 className="text-3xl font-bold text-white">{artist?.name || "All Artists"}</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">{artist?.name || "All Artists"}</h1>
             <p className="muted mt-1 max-w-2xl">{artist?.bio || "Explore top tracks and albums from this artist."}</p>
             <div className="text-sm muted mt-2">{artist?.followers ? `${artist.followers.toLocaleString()} followers` : "—"}</div>
           </div>
@@ -72,6 +80,7 @@ export default function SongList({ selectedArtistId }) {
             <tr>
               <th className="w-12">#</th>
               <th>Title</th>
+              <th>Artist</th>
               <th>Album</th>
               <th className="w-24 text-right">Duration</th>
             </tr>
@@ -80,14 +89,14 @@ export default function SongList({ selectedArtistId }) {
             {filteredSongs.map((song, i) => {
               const isActive = currentSong?.id === song.id;
               return (
-                <tr key={song.id} onClick={() => playSong(song, i, filteredSongs)} className={`songs-row ${isActive ? "bg-[rgba(29,185,84,0.07)]" : ""}`}>
-                  <td className="py-3">{i + 1}</td>
+                <tr key={song.id} onClick={() => playSong(song, i, filteredSongs)} className={`songs-row ${isActive ? "bg-[rgba(29,185,84,0.06)]" : ""}`}>
+                  <td className="py-3 text-sm">{i + 1}</td>
                   <td className="py-3">
                     <div className="font-medium text-white">{song.title}</div>
-                    <div className="text-xs muted">{song.artist?.name || "Unknown"}</div>
                   </td>
-                  <td className="py-3 muted">{song.album?.name || "—"}</td>
-                  <td className="py-3 text-right muted">{Math.floor((song.duration || 0) / 60)}:{String((song.duration || 0) % 60).padStart(2, '0')}</td>
+                  <td className="py-3 muted text-sm">{song.artist?.name || "Unknown"}</td>
+                  <td className="py-3 muted text-sm">{song.album?.name || "—"}</td>
+                  <td className="py-3 text-right muted text-sm">{formatDuration(song.duration)}</td>
                 </tr>
               );
             })}
