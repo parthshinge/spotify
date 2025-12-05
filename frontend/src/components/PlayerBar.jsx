@@ -53,7 +53,25 @@ export default function PlayerBar() {
 
           <div className="flex items-center gap-3 w-full max-w-2xl">
             <span className="text-xs muted">{formatTime(currentTime)}</span>
-            <input type="range" className="progress-track flex-1" min={0} max={duration || 0} value={currentTime} onChange={(e) => seek(Number(e.target.value))} />
+            <input
+              type="range"
+              className="progress-track flex-1"
+              min={0}
+              max={duration || 0}
+              value={currentTime}
+              aria-valuemin={0}
+              aria-valuemax={duration || 0}
+              aria-valuenow={Math.floor(currentTime)}
+              onChange={(e) => seek(Number(e.target.value))}
+              onInput={(e) => seek(Number(e.target.value))}
+              style={{
+                background: `linear-gradient(90deg, var(--spotify-accent) ${
+                  duration ? Math.round((currentTime / duration) * 100) : 0
+                }%, rgba(255,255,255,0.08) ${
+                  duration ? Math.round((currentTime / duration) * 100) : 0
+                }%)`,
+              }}
+            />
             <span className="text-xs muted">{formatTime(duration)}</span>
           </div>
         </div>
