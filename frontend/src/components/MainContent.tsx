@@ -22,6 +22,7 @@ interface Props {
   artist: Artist;
   songs: Song[];
   onPlaySong: (song: Song) => void;
+  currentSongId?: string;
 }
 
 function formatDuration(seconds: number) {
@@ -30,7 +31,7 @@ function formatDuration(seconds: number) {
   return `${m}:${s}`;
 }
 
-export default function MainContent({ artist, songs, onPlaySong }: Props) {
+export default function MainContent({ artist, songs, onPlaySong, currentSongId }: Props) {
   return (
     <main className="flex-1 overflow-y-auto">
       {/* Header / Hero */}
@@ -82,19 +83,24 @@ export default function MainContent({ artist, songs, onPlaySong }: Props) {
           <div>
             {songs.map((song, idx) => {
               const even = idx % 2 === 1;
+              const active = currentSongId === song.id;
               return (
                 <button
                   key={song.id}
                   onClick={() => onPlaySong(song)}
                   className={`w-full text-left grid grid-cols-[48px_2fr_1.5fr_1.5fr_96px] gap-0 px-6 py-3 border-b border-white/5 transition-colors duration-150 ${
-                    even ? "bg-[#070707]" : "bg-black"
+                    active
+                      ? "bg-[#1DB954] text-black"
+                      : even
+                      ? "bg-[#070707]"
+                      : "bg-black"
                   } hover:bg-[#181818]`}
                 >
-                  <div className="text-[#b3b3b3] text-center">{idx + 1}</div>
-                  <div className="text-white truncate">{song.title}</div>
-                  <div className="text-[#b3b3b3] truncate">{song.artist}</div>
-                  <div className="text-[#b3b3b3] truncate">{song.album}</div>
-                  <div className="text-[#b3b3b3] text-right">{song.duration}</div>
+                  <div className={`${active ? 'text-black' : 'text-[#b3b3b3]'} text-center`}>{idx + 1}</div>
+                  <div className={`${active ? 'text-black' : 'text-white'} truncate`}>{song.title}</div>
+                  <div className={`${active ? 'text-black' : 'text-[#b3b3b3]'} truncate`}>{song.artist}</div>
+                  <div className={`${active ? 'text-black' : 'text-[#b3b3b3]'} truncate`}>{song.album}</div>
+                  <div className={`${active ? 'text-black' : 'text-[#b3b3b3]'} text-right`}>{song.duration}</div>
                 </button>
               );
             })}

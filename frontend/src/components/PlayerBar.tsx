@@ -88,14 +88,14 @@ export default function PlayerBar({ currentSong, isPlaying, onPlayPause }: Props
 
       {/* Center */}
       <div className="flex-1 flex flex-col items-center gap-3 max-w-3xl">
-        <div className="flex items-center gap-4">
-          <button className="text-[#b3b3b3] hover:text-white">
+        <div className="flex items-center gap-6">
+          <button className="text-[#b3b3b3] hover:text-white p-2">
             <SkipBack className="w-5 h-5" />
           </button>
-          <button onClick={onPlayPause} className="bg-white text-black rounded-full p-2 shadow-md">
-            {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+          <button onClick={onPlayPause} className="bg-white text-black rounded-full p-3 w-14 h-14 flex items-center justify-center shadow-lg">
+            {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
           </button>
-          <button className="text-[#b3b3b3] hover:text-white">
+          <button className="text-[#b3b3b3] hover:text-white p-2">
             <SkipForward className="w-5 h-5" />
           </button>
         </div>
@@ -104,7 +104,7 @@ export default function PlayerBar({ currentSong, isPlaying, onPlayPause }: Props
           <div className="text-[#b3b3b3] text-xs w-12 text-right">{formatTime(current)}</div>
           <div className="flex-1" onClick={onTrackClick} style={{ cursor: "pointer" }}>
             <div className="h-2 bg-[#333] rounded-full overflow-hidden">
-              <div className="h-full bg-white" style={{ width: `${percent}%` }} />
+              <div className="h-full bg-white rounded-full" style={{ width: `${percent}%` }} />
             </div>
           </div>
           <div className="text-[#b3b3b3] text-xs w-12 text-left">{currentSong.duration}</div>

@@ -85,7 +85,7 @@ export default function App() {
       <div className="max-w-7xl mx-auto px-6 pt-8 flex gap-6">
         <Sidebar artists={artists} activeArtist={activeArtist} onSelectArtist={setActiveArtist} />
 
-        <MainContent artist={selectedArtist} songs={songs} onPlaySong={(s) => { setCurrentSong(s); setIsPlaying(true); }} />
+        <MainContent artist={selectedArtist} songs={songs} currentSongId={currentSong.id} onPlaySong={(s) => { setCurrentSong(s); setIsPlaying(true); }} />
       </div>
 
       <PlayerBar currentSong={currentSong} isPlaying={isPlaying} onPlayPause={() => setIsPlaying((v) => !v)} />

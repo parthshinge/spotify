@@ -14,18 +14,18 @@ body,
 /* Custom scrollbar styling */
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.03);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(168, 85, 247, 0.3);
-    border-radius: 4px;
-    transition: background 0.3s ease;
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    transition: background 0.15s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -72,6 +72,39 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]::-moz-range-track {
     background: transparent;
     border: none;
+}
+
+
+/* Volume + player range overrides */
+
+.player-bar input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+
+.player-bar input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+}
+
+.player-bar input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    margin-top: -3px;
+}
+
+.player-bar input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 
@@ -190,6 +223,32 @@ body {
 .spotify-sidebar .overflow-y-auto::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.06);
     border-radius: 999px;
+}
+
+
+/* Sidebar active pill larger */
+
+.spotify-sidebar button {
+    height: 64px;
+}
+
+.spotify-sidebar button img {
+    width: 44px;
+    height: 44px;
+}
+
+
+/* Make table header look sharp */
+
+.songs-table>div:first-child {
+    background: transparent;
+}
+
+
+/* Player: make controls centered and prominent */
+
+.player-bar .shadow-lg {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 
